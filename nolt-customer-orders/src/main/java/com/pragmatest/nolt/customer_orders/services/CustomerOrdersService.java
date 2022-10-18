@@ -24,4 +24,8 @@ public class CustomerOrdersService {
         orderEntity = repository.save(orderEntity);
         return orderEntity.getId();
     }
+
+    //TODO 2. Add a method to get an existing order.
+    //What are the parameters that are required to identify a specific order
+    //for a specific customer?
 }
