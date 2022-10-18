@@ -30,4 +30,11 @@ public class CustomerServiceController {
         return ResponseEntity.ok(new SubmitOrderResponse(orderId));
     }
 
+    //TODO 1. Add a method to expose a new GET endpoint to retrieve details of an existing order.
+    //Hints:
+    // - the order id can be passed as a path variable in the GET request.
+    // - this endpoint returns information related to the specific order and customer details.
+    // - annotation is -> @GetMapping(value = "orders/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+
+
 }
