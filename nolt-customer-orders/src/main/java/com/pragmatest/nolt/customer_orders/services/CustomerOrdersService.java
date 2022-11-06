@@ -5,8 +5,11 @@ import com.pragmatest.nolt.customer_orders.data.repositories.CustomerOrdersRepos
 import com.pragmatest.nolt.customer_orders.services.models.Order;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -28,4 +31,18 @@ public class CustomerOrdersService {
     //TODO 2. Add a method to get an existing order.
     //What are the parameters that are required to identify a specific order
     //for a specific customer?
+    public Order getOrder(String orderId, String customerId) {
+        OrderEntity orderEntityToFind = new OrderEntity();
+        orderEntityToFind.setCustomerId(customerId);
+        orderEntityToFind.setId(orderId);
+
+        Optional<OrderEntity> retrievedOrderEntity =
+                repository.findOne(Example.of(orderEntityToFind, ExampleMatcher.matchingAll()));
+
+        if (retrievedOrderEntity.isEmpty()) return null;
+
+        Order order = mapper.map(retrievedOrderEntity.get(), Order.class);
+
+        return order;
+    }
 }
