@@ -3,6 +3,7 @@ package com.pragmatest.nolt.customer_orders.web.controllers;
 import com.pragmatest.nolt.customer_orders.services.CustomerOrdersService;
 import com.pragmatest.nolt.customer_orders.services.models.Order;
 import com.pragmatest.nolt.customer_orders.web.controllers.requests.SubmitOrderRequest;
+import com.pragmatest.nolt.customer_orders.web.controllers.responses.GetOrderResponse;
 import com.pragmatest.nolt.customer_orders.web.controllers.responses.SubmitOrderResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,17 @@ public class CustomerServiceController {
     // - the order id can be passed as a path variable in the GET request.
     // - this endpoint returns information related to the specific order and customer details.
     // - annotation is -> @GetMapping(value = "orders/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "orders/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GetOrderResponse> get(@RequestHeader(name = "X-Customer-Id") String customerId, @PathVariable String orderId) {
 
+        Order order = customerOrdersService.getOrder(orderId, customerId);
+
+        if (order == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        GetOrderResponse getOrderResponse = mapper.map(order, GetOrderResponse.class);
+        return ResponseEntity.ok(getOrderResponse);
+    }
 
 }
